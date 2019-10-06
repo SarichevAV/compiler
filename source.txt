@@ -1,0 +1,4 @@
+Integer a, b;
+Begin
+a := - a;
+End
