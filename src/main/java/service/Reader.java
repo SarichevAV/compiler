@@ -9,7 +9,7 @@ public class Reader {
         file = new File(path);
     }
 
-    public String  readFile() {
+    public String readFile() {
         StringBuilder sb = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
