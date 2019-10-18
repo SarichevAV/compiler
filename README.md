@@ -1,6 +1,6 @@
 # Компилятор
 
-<h3> Описание языка в форме Бэкуса-Наура </h3>
+### Описание языка в форме Бэкуса-Наура
 
 <Программа> ::= <Объявление переменных> <Описание вычислений><br>
 <Объявление переменных> ::= Integer <Список переменных><br>
@@ -16,7 +16,7 @@
 <Идент> ::= <Буква> <Идент> | <Буква><br>
 <Константа> ::= <Цифра> <Константа> | <Цифра><br> 
 
-<h3> Классы лексем <h3>
+### Классы лексем
 
 <h5>
 <table>
@@ -34,7 +34,15 @@
 </table>
 </h5>
 
-
+### Синтаксический граф
+  
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/1.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/2.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/3.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/4.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/5.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/6.png)
+![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/7.png)
 
 
 
