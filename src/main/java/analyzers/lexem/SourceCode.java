@@ -1,6 +1,4 @@
-package analyzer;
-
-import exceptions.EndFileException;
+package analyzers.lexem;
 
 public class SourceCode {
     private char[] code;
@@ -15,7 +13,7 @@ public class SourceCode {
         code = sourceCode.toCharArray();
         currIndex = 0;
         lineN = 1;
-        preLinesLenght = 0;
+        preLinesLenght = -1;
         curr = code[currIndex];
     }
 
@@ -24,7 +22,7 @@ public class SourceCode {
     }
 
     public void setLexemNumberCurrentIndex() {
-        lexemN = currIndex - preLinesLenght + 1;
+        lexemN = currIndex - preLinesLenght;
     }
 
     public char getCurr() {

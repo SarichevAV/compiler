@@ -1,4 +1,6 @@
-Integer a, b;
+Integer a, b, cs;
 Begin
-a := - a;
+    a := 35;
+    b := 40;
+    c := a + (c + (a - d));
 End

@@ -1,4 +1,4 @@
-package analyzer.models;
+package analyzers.lexem.models;
 
 public class Token {
     private int lineNumber;
@@ -37,5 +37,13 @@ public class Token {
 
     public int getSymbolNumber() {
         return symbolNumber;
+    }
+
+    public boolean isRightToken(TokenNames expTokenNames) {
+        return tokenName.equals(expTokenNames);
+    }
+
+    public boolean isRightValue(String expValue) {
+        return value.equals(expValue);
     }
 }

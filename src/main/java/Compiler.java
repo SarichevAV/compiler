@@ -1,7 +1,8 @@
-import analyzer.LexemAnalyzer;
+import analyzers.lexem.LexemAnalyzer;
+import analyzers.lexem.SourceCode;
+import analyzers.syntax.SyntaxAnalyzer;
 import service.Reader;
-import analyzer.SourceCode;
-import analyzer.models.Token;
+import analyzers.lexem.models.Token;
 import service.Writer;
 
 import java.util.List;
@@ -35,5 +36,8 @@ public class Compiler {
         Compiler compiler = new Compiler();
         List<Token> tokens = compiler.lexAnalyzer("source.txt");
         compiler.writeLexemTable(tokens);
+        SyntaxAnalyzer sa = new SyntaxAnalyzer(tokens);
+        sa.analyze();
+
     }
 }

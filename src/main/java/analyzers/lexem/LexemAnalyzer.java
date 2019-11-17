@@ -1,8 +1,7 @@
-package analyzer;
+package analyzers.lexem;
 
-import analyzer.models.Token;
-import analyzer.models.TokenNames;
-import exceptions.EndFileException;
+import analyzers.lexem.models.Token;
+import analyzers.lexem.models.TokenNames;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,16 +22,12 @@ public class LexemAnalyzer {
 
     public List<Token> lexer() {
         while (!source.isEnd()) {
-            try {
-                checkState();
-            } catch (EndFileException e) {
-                System.err.println("Array index out of bounds");
-            }
+            checkState();
         }
         return tokens;
     }
 
-    private void checkState() throws EndFileException {
+    private void checkState() {
         source.setLexemNumberCurrentIndex();
         switch (state) {
             case H:
@@ -62,7 +57,7 @@ public class LexemAnalyzer {
         }
     }
 
-    private void handlH() throws EndFileException {
+    private void handlH() {
         char c = source.getCurr();
         while ((c == ' ') || (c == '\t') || (c == '\n')) {
             if (c == '\n') {
@@ -85,7 +80,7 @@ public class LexemAnalyzer {
         }
     }
 
-    private void handlID() throws EndFileException {
+    private void handlID() {
         char c = source.getCurr();
         StringBuilder str = new StringBuilder();
         str.append(c);
@@ -105,7 +100,7 @@ public class LexemAnalyzer {
         state = States.H;
     }
 
-    private void handlASGN() throws EndFileException {
+    private void handlASGN() {
         char c = source.next();
         if (c == '=') {
             Token token = new Token(source.getLineN(), source.getLexemN(),
@@ -118,7 +113,7 @@ public class LexemAnalyzer {
         }
     }
 
-    private void handlDLM() throws EndFileException {
+    private void handlDLM() {
         char c = source.getCurr();
         if ((c == '(') || (c == ')') || (c == ';') || (c == ',')) {
             tokens.add(new Token(source.getLineN(), source.getLexemN(),
@@ -130,7 +125,7 @@ public class LexemAnalyzer {
         }
     }
 
-    private void handlNM() throws EndFileException {
+    private void handlNM() {
         StringBuilder sb = new StringBuilder();
         sb.append(source.getCurr());
         char c = source.next();
@@ -143,21 +138,21 @@ public class LexemAnalyzer {
         state = States.H;
     }
 
-    private void handlOPH() throws EndFileException {
+    private void handlOPH() {
         tokens.add(new Token(source.getLineN(), source.getLexemN(),
                 Character.toString(source.getCurr()), TokenNames.OPERH));
         state = States.H;
         source.next();
     }
 
-    private void handlOPL() throws EndFileException {
+    private void handlOPL() {
         tokens.add(new Token(source.getLineN(), source.getLexemN(),
                 Character.toString(source.getCurr()), TokenNames.OPERL));
         state = States.H;
         source.next();
     }
 
-    private void handlERR() throws EndFileException {
+    private void handlERR() {
         System.out.printf("Unknown character (%d, %d) : '%c'\n",
                 source.getLineN(), source.getLexemN(), source.getCurr());
         state = States.H;
