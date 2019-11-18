@@ -41,6 +41,7 @@ public class SyntaxAnalyzer {
         beginKword();
         listAssigns();
         endKword();
+        System.out.println("Syntax is OK");
     }
 
     private void integerKword() throws ExpectedException {
