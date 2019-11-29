@@ -2,7 +2,7 @@ package analyzers.syntax;
 
 import analyzers.lexem.models.Token;
 import analyzers.lexem.models.TokenNames;
-import analyzers.syntax.exceptions.ExpectedException;
+import exceptions.ExpectedException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,14 +24,9 @@ public class SyntaxAnalyzer {
         tokens = tokenList.iterator();
     }
 
-    public void analyze() {
-        try {
+    public void analyze() throws ExpectedException {
             nextToken();
             program();
-        } catch (ExpectedException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void program() throws ExpectedException {
@@ -41,7 +36,7 @@ public class SyntaxAnalyzer {
         beginKword();
         listAssigns();
         endKword();
-        System.out.println("Syntax is OK");
+        System.out.println("The syntax is correct");
     }
 
     private void integerKword() throws ExpectedException {
@@ -98,9 +93,7 @@ public class SyntaxAnalyzer {
         identifier();
         asgn();
         maybeMinus();
-        do {
-            subexp();
-        } while (isOperation());
+        subexp();
         semicolonInEndExpression();
         if (token.isRightToken(TokenNames.IDENT)) {
             listAssigns();
@@ -113,25 +106,23 @@ public class SyntaxAnalyzer {
     }
 
     private void subexp() throws ExpectedException {
-        if (token.isRightToken(TokenNames.DELIM)
-                && token.isRightValue(LEFT_BRACKET)) {
+        if (isleftBracket()) {
             nextToken();
             maybeMinus();
             subexp();
-            while (isOperation()) {
+            rightBracket();
+            if (isOperation()) {
                 nextToken();
                 subexp();
             }
-            rightBracket();
+        } else if (isOperand()) {
             nextToken();
-        } else if (token.isRightToken(TokenNames.IDENT)
-                || token.isRightToken(TokenNames.CONST)) {
-            nextToken();
-        } else if (isOperation()) {
-            nextToken();
-            subexp();
+            if (isOperation()) {
+                nextToken();
+                subexp();
+            }
         } else {
-            // ???
+            throw new ExpectedException(token,"OPERAND or LEFT BRACKET");
         }
     }
 
@@ -162,6 +153,17 @@ public class SyntaxAnalyzer {
                 && token.isRightValue(RIGHT_BRACKET))) {
             throw new ExpectedException(token, RIGHT_BRACKET);
         }
+        nextToken();
+    }
+
+    private boolean isOperand(){
+        return token.isRightToken(TokenNames.IDENT)
+                || token.isRightToken(TokenNames.CONST);
+    }
+
+    private boolean isleftBracket() throws ExpectedException {
+        return token.isRightToken(TokenNames.DELIM)
+                && token.isRightValue(LEFT_BRACKET);
     }
 
     private void nextToken() {

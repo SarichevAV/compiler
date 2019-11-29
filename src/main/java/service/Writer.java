@@ -1,21 +1,29 @@
 package service;
 
 import java.io.*;
+import java.util.List;
 
 public class Writer {
-    private File file;
+    private BufferedWriter bw;
 
-    public Writer(String path) {
-        file = new File(path);
+    public void setPath(String path) throws IOException {
+        File file = new File(path);
+        bw = new BufferedWriter(new FileWriter(file));
     }
 
     public void write(String text) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write(text);
             bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void write(List<String> text) {
+        for (String temp : text) {
+            write(temp);
+            write("\n");
         }
     }
 }

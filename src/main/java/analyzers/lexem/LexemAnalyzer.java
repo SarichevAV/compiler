@@ -2,6 +2,7 @@ package analyzers.lexem;
 
 import analyzers.lexem.models.Token;
 import analyzers.lexem.models.TokenNames;
+import exceptions.UnknownCharacterException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,14 +21,14 @@ public class LexemAnalyzer {
         state = States.H;
     }
 
-    public List<Token> lexer() {
+    public List<Token> lexer() throws UnknownCharacterException {
         while (!source.isEnd()) {
             checkState();
         }
         return tokens;
     }
 
-    private void checkState() {
+    private void checkState() throws UnknownCharacterException {
         source.setLexemNumberCurrentIndex();
         switch (state) {
             case H:
@@ -59,7 +60,7 @@ public class LexemAnalyzer {
 
     private void handlH() {
         char c = source.getCurr();
-        while ((c == ' ') || (c == '\t') || (c == '\n')) {
+        while ((c == ' ') || (c == '\t') || (c == '\n') || (c== '\r')) {
             if (c == '\n') {
                 source.nextLine();
             }
@@ -152,11 +153,9 @@ public class LexemAnalyzer {
         source.next();
     }
 
-    private void handlERR() {
-        System.out.printf("Unknown character (%d, %d) : '%c'\n",
-                source.getLineN(), source.getLexemN(), source.getCurr());
-        state = States.H;
-        source.next();
+    private void handlERR() throws UnknownCharacterException {
+        throw new UnknownCharacterException(source.getLineN(),
+                source.getLexemN(), source.getCurr());
     }
 
     private boolean isKeyWord(String str) {

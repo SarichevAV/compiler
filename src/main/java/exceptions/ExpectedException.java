@@ -1,13 +1,13 @@
-package analyzers.syntax.exceptions;
+package exceptions;
 
 import analyzers.lexem.models.Token;
 import analyzers.lexem.models.TokenNames;
 
 public class ExpectedException extends Exception {
     private static final String EXPECTED_VALUE_PATTERN =
-            "Error:(%d, %d) expected \"%s\" but get \"%s\"";
+            "Error:(%d, %d) expected \"%s\" but get \"%s\"\n";
     private static final String NOT_FOUND_PATTERN =
-            "Error:(%d, %d) %s not found";
+            "Error:(%d, %d) %s not found\n";
 
     public ExpectedException(Token token, String expected) {
         super(String.format(EXPECTED_VALUE_PATTERN, token.getLineNumber(),
