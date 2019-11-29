@@ -36,13 +36,13 @@
 
 ### Синтаксический граф
   
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/1.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/2.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/3.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/4.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/5.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/6.png)
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/7.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/1.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/2.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/3.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/4.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/5.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/6.png)
+!(https://github.com/SarichevAV/compiler/blob/master/illustrations/7.png)
 
 
 
