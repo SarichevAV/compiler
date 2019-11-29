@@ -36,7 +36,7 @@
 
 ### Синтаксический граф
   
-![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/1.png)
+![Alt text](https://github.com/SarichevAV/compiler/master/illustrations/1.png)
 ![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/2.png)
 ![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/3.png)
 ![Alt text](https://github.com/SarichevAV/compiler/blob/master/illustrations/4.png)
