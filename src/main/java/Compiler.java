@@ -1,5 +1,4 @@
 import analyzers.lexem.LexemAnalyzer;
-import analyzers.lexem.SourceCode;
 import analyzers.syntax.SyntaxAnalyzer;
 import exceptions.ExpectedException;
 import exceptions.UnknownCharacterException;
@@ -11,36 +10,26 @@ import java.io.IOException;
 import java.util.List;
 
 public class Compiler {
+    private static final String PATH_TO_SOURCE_CODE = "source.txt";
+    private static final String PATH_TO_LEXEM_TABLE = "LexemTable.txt";
+    private static final String PATH_TO_POSTFIX_RECORDS = "PostFixRecords.txt";
     private Writer writer = new Writer();
     private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
     private PostfixRecordGenerator PFRecGen = new PostfixRecordGenerator();
-
-
-        public void initCompiler() {
-        try {
-            writer.setPath("lexemTable.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<Token> lexAnalyzer(String pathSource) throws UnknownCharacterException {
-        Reader reader = new Reader(pathSource);
-        String sourceCodeTxt = reader.readFile();
-        SourceCode sourceCode = new SourceCode(sourceCodeTxt);
-        LexemAnalyzer lexemAnalyzer = new LexemAnalyzer(sourceCode);
-        List<Token> tokens = lexemAnalyzer.lexer();
-        return tokens;
-    }
+    private Reader reader = new Reader();
+    private LexemAnalyzer lexemAnalyzer = new LexemAnalyzer();
 
 
     public void startCompile() {
         try {
-            List<Token> tokens = lexAnalyzer("source.txt");
-            writer.writeLexemTable(tokens);
+            String sourceCodeTxt = reader.readFile(PATH_TO_SOURCE_CODE);
+            List<Token> tokens = lexemAnalyzer.analyze(sourceCodeTxt);
+            writer.writeLexemTable(tokens, PATH_TO_LEXEM_TABLE);
             syntaxAnalyzer.analyze(tokens);
             List<String> postfixRecords = PFRecGen.generatePostfixRecords(tokens);
-            writer.writeList(postfixRecords,"PostFixRecords.txt");
+            writer.writeList(postfixRecords,PATH_TO_POSTFIX_RECORDS);
+
+
         } catch (ExpectedException | UnknownCharacterException e) {
             System.out.print(e.getMessage());
             e.printStackTrace();
@@ -51,7 +40,6 @@ public class Compiler {
 
     public static void main(String[] args) {
         Compiler compiler = new Compiler();
-        compiler.initCompiler();
         compiler.startCompile();
     }
 }

@@ -29,7 +29,7 @@ public class Writer {
         writeString(sb.toString(),path);
     }
 
-    public void writeLexemTable(List<Token> tokens) throws IOException {
+    public void writeLexemTable(List<Token> tokens,String path) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (Token token : tokens) {
             sb.append(String.format(LEXEM_PATTERN,
@@ -38,6 +38,6 @@ public class Writer {
                     token.getSymbolNumber(),
                     token.getValue()));
         }
-        writeString(sb.toString(),"LexemTable.txt");
+        writeString(sb.toString(),path);
     }
 }

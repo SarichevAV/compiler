@@ -3,6 +3,7 @@ package analyzers.syntax;
 import analyzers.lexem.models.Token;
 import analyzers.lexem.models.TokenNames;
 import exceptions.ExpectedException;
+import service.TokensChecker;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +15,6 @@ public class SyntaxAnalyzer {
     private final static String SEMICOLON_DELIM = ";";
     private final static String SIGN_ASSIGN = ":=";
     private final static String SIGN_MINUS = "-";
-    private final static String LEFT_BRACKET = "(";
     private final static String RIGHT_BRACKET = ")";
 
     private Iterator<Token> tokens;
@@ -103,7 +103,7 @@ public class SyntaxAnalyzer {
     }
 
     private void subexp() throws ExpectedException {
-        if (isleftBracket()) {
+        if (TokensChecker.isleftBracket(token)) {
             nextToken();
             maybeMinus();
             subexp();
@@ -112,7 +112,7 @@ public class SyntaxAnalyzer {
                 nextToken();
                 subexp();
             }
-        } else if (isOperand()) {
+        } else if (TokensChecker.isOperand(token)) {
             nextToken();
             if (isOperation()) {
                 nextToken();
@@ -151,16 +151,6 @@ public class SyntaxAnalyzer {
             throw new ExpectedException(token, RIGHT_BRACKET);
         }
         nextToken();
-    }
-
-    private boolean isOperand(){
-        return token.isRightToken(TokenNames.IDENT)
-                || token.isRightToken(TokenNames.CONST);
-    }
-
-    private boolean isleftBracket() throws ExpectedException {
-        return token.isRightToken(TokenNames.DELIM)
-                && token.isRightValue(LEFT_BRACKET);
     }
 
     private void nextToken() {
