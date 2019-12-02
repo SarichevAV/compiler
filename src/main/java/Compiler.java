@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class Compiler {
-    private final static String LEXEM_PATTERN = "%s (%d, %d): %s\n";
-    private Writer writer;
+    private Writer writer = new Writer();
+    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
+    private PostfixRecordGenerator PFRecGen = new PostfixRecordGenerator();
 
-    public Compiler() {
-        writer = new Writer();
-    }
 
-    public void initCompiler() {
+        public void initCompiler() {
         try {
             writer.setPath("lexemTable.txt");
         } catch (IOException e) {
@@ -35,40 +33,14 @@ public class Compiler {
         return tokens;
     }
 
-    public void writeLexemTable(List<Token> tokens) {
-        StringBuilder sb = new StringBuilder();
-        for (Token token : tokens) {
-            sb.append(String.format(LEXEM_PATTERN,
-                    token.getTokenName().getName(),
-                    token.getLineNumber(),
-                    token.getSymbolNumber(),
-                    token.getValue()));
-        }
-        writer.write(sb.toString());
-    }
-
-    public void writePostFixRecords(List<Token> tokens) {
-        StringBuilder sb = new StringBuilder();
-        for (Token token : tokens) {
-            sb.append(String.format(LEXEM_PATTERN,
-                    token.getTokenName().getName(),
-                    token.getLineNumber(),
-                    token.getSymbolNumber(),
-                    token.getValue()));
-        }
-        writer.write(sb.toString());
-    }
 
     public void startCompile() {
         try {
             List<Token> tokens = lexAnalyzer("source.txt");
-            writeLexemTable(tokens);
-            SyntaxAnalyzer sa = new SyntaxAnalyzer(tokens);
-            sa.analyze();
-            PostfixRecordGenerator PFRecGen = new PostfixRecordGenerator(tokens);
-            List<String> postfixRecords = PFRecGen.generatePostfixRecords();
-            writer.setPath("PostFixRecords.txt");
-            writer.write(postfixRecords);
+            writer.writeLexemTable(tokens);
+            syntaxAnalyzer.analyze(tokens);
+            List<String> postfixRecords = PFRecGen.generatePostfixRecords(tokens);
+            writer.writeList(postfixRecords,"PostFixRecords.txt");
         } catch (ExpectedException | UnknownCharacterException e) {
             System.out.print(e.getMessage());
             e.printStackTrace();

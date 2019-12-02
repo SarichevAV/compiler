@@ -20,13 +20,10 @@ public class SyntaxAnalyzer {
     private Iterator<Token> tokens;
     private Token token;
 
-    public SyntaxAnalyzer(List<Token> tokenList) {
+    public void analyze(List<Token> tokenList) throws ExpectedException {
         tokens = tokenList.iterator();
-    }
-
-    public void analyze() throws ExpectedException {
-            nextToken();
-            program();
+        nextToken();
+        program();
     }
 
     private void program() throws ExpectedException {

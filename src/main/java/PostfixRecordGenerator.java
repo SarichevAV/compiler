@@ -11,24 +11,25 @@ public class PostfixRecordGenerator {
     private final static String SIGN_ASSIGN = ":=";
     private final static String SEMICOLON_DELIM = ";";
     private final static String RIGHT_BRACKET = ")";
+    private final static String END_KWORD = "End";
 
     private List<String> postfixRecords;
     private Iterator<Token> tokens;
     private Token token;
 
-    public PostfixRecordGenerator(List<Token> tokenList) {
-        tokens = tokenList.iterator();
-        token = tokens.next();
+    public PostfixRecordGenerator() {
         postfixRecords = new ArrayList<>();
     }
 
-    public List<String> generatePostfixRecords() throws ExpectedException {
-        ScrollToNextAsgn();
-        if (token != null) {
+    public List<String> generatePostfixRecords(List<Token> tokenList) throws ExpectedException {
+        tokens = tokenList.iterator();
+        nextToken();
+         while (!isEnd()) {
+            ScrollToNextAsgn();
             nextToken();
             String record = generatePostfixRecord();
-            postfixRecords.add("Assignment on line №"+ token.getLineNumber() + ": " + record);
-            generatePostfixRecords();
+            postfixRecords.add("Expression on line №"+ token.getLineNumber() + ": " + record);
+            nextToken();
         }
         return postfixRecords;
     }
@@ -58,12 +59,9 @@ public class PostfixRecordGenerator {
 
     private boolean priority(Token firstElement, Token value) {
         boolean result;
-        if (firstElement.isRightToken(TokenNames.OPERH)
-                && value.isRightToken(TokenNames.OPERL)
-                || (firstElement.isRightToken(TokenNames.OPERL)
-                && value.isRightToken(TokenNames.OPERL))
-                || ((isOperation(firstElement)) &&
-                (isRightBracket(value))))
+        if (isFirstHighSecondLow(firstElement,value)
+                || isBothLow(firstElement,value)
+                || isFirstOpSecondRBracket(firstElement,value))
             result = true;
         else result = false;
         return result;
@@ -75,6 +73,26 @@ public class PostfixRecordGenerator {
             if (token == null)
                 break;
         }
+    }
+
+    private boolean isEnd() {
+        return token.isRightToken(TokenNames.KWORD)
+                && token.isRightValue(END_KWORD);
+    }
+
+    private boolean isFirstOpSecondRBracket(Token first,Token second) {
+        return isOperation(first) &&
+                isRightBracket(second);
+    }
+
+    private boolean isBothLow(Token first,Token second) {
+        return (first.isRightToken(TokenNames.OPERL)
+                && second.isRightToken(TokenNames.OPERL));
+    }
+
+    private boolean isFirstHighSecondLow(Token first,Token second) {
+        return first.isRightToken(TokenNames.OPERH)
+                && second.isRightToken(TokenNames.OPERL);
     }
 
     private boolean isOperation(Token token) {
@@ -96,7 +114,6 @@ public class PostfixRecordGenerator {
         return token.isRightToken(TokenNames.DELIM)
                 && token.isRightValue(SEMICOLON_DELIM);
     }
-
 
     private boolean isAsgn() throws ExpectedException {
         return token.isRightToken(TokenNames.ASGN)
