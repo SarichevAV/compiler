@@ -15,13 +15,13 @@ public class LexemAnalyzer {
     private SourceCode source;
     private States state;
 
-    public LexemAnalyzer(SourceCode source) {
-        this.source = source;
+    public LexemAnalyzer() {
         tokens = new ArrayList<>();
         state = States.H;
     }
 
-    public List<Token> lexer() throws UnknownCharacterException {
+    public List<Token> analyze(String sourceString) throws UnknownCharacterException {
+        source = new SourceCode(sourceString);
         while (!source.isEnd()) {
             checkState();
         }

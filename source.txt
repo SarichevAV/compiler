@@ -1,5 +1,17 @@
 Integer a, b, cs;
 Begin
-a:=(aa+(ab-b))*(b+2-a);
+a:=-a+b;
 b:=(A+B)*C;
+c:=a + b * c + d;
+d:=(a + b) * (c + d);
+e:=(a+(a-b))*(b+2-a);
+e:=(a+(a-b))*(b+2-a);
+e:=(a+(a-b))*(b+2-a);
+e:=(a+(a-b))*(b+2-a);
+e:=(a+(a-b))*(b+2-a)-1;
+e:=(a+(a-b))*(b+2-a)+3;
+e:=(a+(a-b))*(b+2-a)+2;
+e:=(a+(a-b))*(b+2-a);
+e:=(a+(a-b))*(b+2-a);
+
 End

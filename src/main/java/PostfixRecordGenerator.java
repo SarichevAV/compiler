@@ -1,34 +1,31 @@
 import analyzers.lexem.models.Token;
 import analyzers.lexem.models.TokenNames;
+import service.TokensChecker;
 import exceptions.ExpectedException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
 public class PostfixRecordGenerator {
-    private final static String SIGN_ASSIGN = ":=";
-    private final static String SEMICOLON_DELIM = ";";
-    private final static String RIGHT_BRACKET = ")";
 
     private List<String> postfixRecords;
     private Iterator<Token> tokens;
     private Token token;
 
-    public PostfixRecordGenerator(List<Token> tokenList) {
-        tokens = tokenList.iterator();
-        token = tokens.next();
+    public PostfixRecordGenerator() {
         postfixRecords = new ArrayList<>();
     }
 
-    public List<String> generatePostfixRecords() throws ExpectedException {
-        ScrollToNextAsgn();
-        if (token != null) {
+    public List<String> generatePostfixRecords(List<Token> tokenList) throws ExpectedException {
+        tokens = tokenList.iterator();
+        nextToken();
+         while (!TokensChecker.isEnd(token)) {
+            ScrollToNextAsgn();
             nextToken();
             String record = generatePostfixRecord();
-            postfixRecords.add("Assignment on line №"+ token.getLineNumber() + ": " + record);
-            generatePostfixRecords();
+            postfixRecords.add("Expression on line №"+ token.getLineNumber() + ": " + record);
+            nextToken();
         }
         return postfixRecords;
     }
@@ -36,8 +33,8 @@ public class PostfixRecordGenerator {
     private String generatePostfixRecord() {
         StringBuilder builder = new StringBuilder();
         Stack<Token> stack = new Stack<>();
-        while (!isSemiColon()) {
-            if (isOperand())
+        while (!TokensChecker.isSemiColon(token)) {
+            if (TokensChecker.isOperand(token))
                 builder.append(token.getValue());
             else {
                 while (!stack.isEmpty() && (priority(stack.lastElement(), token))) {
@@ -58,49 +55,20 @@ public class PostfixRecordGenerator {
 
     private boolean priority(Token firstElement, Token value) {
         boolean result;
-        if (firstElement.isRightToken(TokenNames.OPERH)
-                && value.isRightToken(TokenNames.OPERL)
-                || (firstElement.isRightToken(TokenNames.OPERL)
-                && value.isRightToken(TokenNames.OPERL))
-                || ((isOperation(firstElement)) &&
-                (isRightBracket(value))))
+        if (TokensChecker.isFirstHighSecondLow(firstElement,value)
+                || TokensChecker.isBothLow(firstElement,value)
+                || TokensChecker.isFirstOpSecondRBracket(firstElement,value))
             result = true;
         else result = false;
         return result;
     }
 
     private void ScrollToNextAsgn() throws ExpectedException {
-        while (!isAsgn()) {
+        while (!TokensChecker.isAsgn(token)) {
             nextToken();
             if (token == null)
                 break;
         }
-    }
-
-    private boolean isOperation(Token token) {
-        return token.isRightToken(TokenNames.OPERL)
-                || token.isRightToken(TokenNames.OPERH);
-    }
-
-    private boolean isRightBracket(Token token) {
-        return token.isRightToken(TokenNames.DELIM)
-                && token.isRightValue(RIGHT_BRACKET);
-    }
-
-    private boolean isOperand() {
-        return token.isRightToken(TokenNames.IDENT)
-                || token.isRightToken(TokenNames.CONST);
-    }
-
-    private boolean isSemiColon() {
-        return token.isRightToken(TokenNames.DELIM)
-                && token.isRightValue(SEMICOLON_DELIM);
-    }
-
-
-    private boolean isAsgn() throws ExpectedException {
-        return token.isRightToken(TokenNames.ASGN)
-                && token.isRightValue(SIGN_ASSIGN);
     }
 
     private void nextToken() {

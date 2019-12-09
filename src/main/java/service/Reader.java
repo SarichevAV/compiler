@@ -3,13 +3,9 @@ package service;
 import java.io.*;
 
 public class Reader {
-    private File file;
 
-    public Reader(String path) {
-        file = new File(path);
-    }
-
-    public String readFile() {
+    public String readFile(String path) {
+        File file = new File(path);
         StringBuilder sb = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));

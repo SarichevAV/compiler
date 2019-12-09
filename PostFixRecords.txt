@@ -1,2 +1,13 @@
-Assignment on line №3: aaabb-+b2+a-*
-Assignment on line №4: AB+C*
+Expression on line №3: a-b+
+Expression on line №4: AB+C*
+Expression on line №5: abc*+d+
+Expression on line №6: ab+cd+*
+Expression on line №7: aab-+b2+a-*
+Expression on line №8: aab-+b2+a-*
+Expression on line №9: aab-+b2+a-*
+Expression on line №10: aab-+b2+a-*
+Expression on line №11: aab-+b2+a-*1-
+Expression on line №12: aab-+b2+a-*3+
+Expression on line №13: aab-+b2+a-*2+
+Expression on line №14: aab-+b2+a-*
+Expression on line №15: aab-+b2+a-*
