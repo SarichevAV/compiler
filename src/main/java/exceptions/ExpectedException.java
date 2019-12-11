@@ -1,7 +1,7 @@
 package exceptions;
 
-import analyzers.lexem.models.Token;
-import analyzers.lexem.models.TokenNames;
+import models.Token;
+import models.TokenNames;
 
 public class ExpectedException extends Exception {
     private static final String EXPECTED_VALUE_PATTERN =

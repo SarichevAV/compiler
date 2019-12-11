@@ -1,10 +1,11 @@
 package service;
 
-import analyzers.lexem.models.Token;
-import analyzers.lexem.models.TokenNames;
+import models.Token;
+import models.TokenNames;
 import exceptions.ExpectedException;
 
 public class TokensChecker {
+    private final static String BEGIN_KWORD = "Begin";
     private final static String END_KWORD = "End";
     private final static String SEMICOLON_DELIM = ";";
     private final static String SIGN_ASSIGN = ":=";
@@ -32,8 +33,10 @@ public class TokensChecker {
     }
 
     public static boolean isBothLow(Token first,Token second) {
-        return (first.isRightToken(TokenNames.OPERL)
-                && second.isRightToken(TokenNames.OPERL));
+        return ((first.isRightToken(TokenNames.OPERL)
+                && second.isRightToken(TokenNames.OPERL))
+                || (first.isRightToken(TokenNames.OPERH)
+                && second.isRightToken(TokenNames.OPERH)));
     }
 
     public static boolean isFirstHighSecondLow(Token first,Token second) {
@@ -60,5 +63,14 @@ public class TokensChecker {
     public static boolean isAsgn(Token token) throws ExpectedException {
         return token.isRightToken(TokenNames.ASGN)
                 && token.isRightValue(SIGN_ASSIGN);
+    }
+
+    public static boolean isBegin(Token token) {
+        return token.isRightToken(TokenNames.KWORD)
+                && token.isRightValue(BEGIN_KWORD);
+    }
+
+    public static boolean isIdent(Token token) {
+        return token.isRightToken(TokenNames.IDENT);
     }
 }

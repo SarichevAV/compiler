@@ -1,7 +1,7 @@
 package analyzers.lexem;
 
-import analyzers.lexem.models.Token;
-import analyzers.lexem.models.TokenNames;
+import models.Token;
+import models.TokenNames;
 import exceptions.UnknownCharacterException;
 
 import java.util.ArrayList;

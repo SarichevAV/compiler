@@ -1,4 +1,4 @@
-package analyzers.lexem.models;
+package models;
 
 public enum TokenNames {
     KWORD("KEY_WORD"),

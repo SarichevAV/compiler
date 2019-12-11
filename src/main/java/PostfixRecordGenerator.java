@@ -1,5 +1,5 @@
-import analyzers.lexem.models.Token;
-import analyzers.lexem.models.TokenNames;
+import models.Token;
+import models.TokenNames;
 import service.TokensChecker;
 import exceptions.ExpectedException;
 import java.util.ArrayList;
@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Stack;
 
 public class PostfixRecordGenerator {
+    private static final String ASGN_VALUE = ":=";
+    private static final String RIGHT_BRACKET = ")";
 
-    private List<String> postfixRecords;
+
+    private List<Token> postfixRecords;
     private Iterator<Token> tokens;
     private Token token;
 
@@ -17,30 +20,31 @@ public class PostfixRecordGenerator {
         postfixRecords = new ArrayList<>();
     }
 
-    public List<String> generatePostfixRecords(List<Token> tokenList) throws ExpectedException {
+    public List<Token> generatePostfixRecords(List<Token> tokenList) throws ExpectedException {
         tokens = tokenList.iterator();
         nextToken();
-         while (!TokensChecker.isEnd(token)) {
-            ScrollToNextAsgn();
+        scrollToBegin();
+        nextToken();
+        while (!TokensChecker.isEnd(token)) {
+            postfixRecords.add(token);
             nextToken();
-            String record = generatePostfixRecord();
-            postfixRecords.add("Expression on line №"+ token.getLineNumber() + ": " + record);
+            nextToken();
+            handleExpression();
             nextToken();
         }
         return postfixRecords;
     }
 
-    private String generatePostfixRecord() {
-        StringBuilder builder = new StringBuilder();
+    private void handleExpression() {
         Stack<Token> stack = new Stack<>();
         while (!TokensChecker.isSemiColon(token)) {
-            if (TokensChecker.isOperand(token))
-                builder.append(token.getValue());
-            else {
+            if (TokensChecker.isOperand(token)) {
+                postfixRecords.add(token);
+            } else {
                 while (!stack.isEmpty() && (priority(stack.lastElement(), token))) {
-                    builder.append(stack.pop().getValue());
+                    postfixRecords.add(stack.pop());
                 }
-                if (stack.isEmpty() || !token.getValue().equals(")")) {
+                if (stack.isEmpty() || !token.getValue().equals(RIGHT_BRACKET)) {
                     stack.push(token);
                 } else {
                     stack.pop();
@@ -48,9 +52,11 @@ public class PostfixRecordGenerator {
             }
             nextToken();
         }
-        while (!stack.isEmpty())
-            builder.append(stack.pop().getValue());
-        return builder.toString();
+        if (TokensChecker.isSemiColon(token))
+        while (!stack.isEmpty()) {
+            postfixRecords.add(stack.pop());
+        }
+        addAsgnToken();
     }
 
     private boolean priority(Token firstElement, Token value) {
@@ -63,12 +69,23 @@ public class PostfixRecordGenerator {
         return result;
     }
 
-    private void ScrollToNextAsgn() throws ExpectedException {
+    private void scrollToNextAsgn() throws ExpectedException {
         while (!TokensChecker.isAsgn(token)) {
             nextToken();
             if (token == null)
                 break;
         }
+    }
+
+    private void scrollToBegin() {
+        while (!TokensChecker.isBegin(token)) {
+            nextToken();
+        }
+    }
+
+    private void addAsgnToken() {
+        Token token = new Token(ASGN_VALUE, TokenNames.ASGN);
+        postfixRecords.add(token);
     }
 
     private void nextToken() {

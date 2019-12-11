@@ -1,13 +1,11 @@
 package service;
 
-import analyzers.lexem.models.Token;
-
 import java.io.*;
 import java.util.List;
 
 public class Writer {
     private BufferedWriter bw;
-    private final static String LEXEM_PATTERN = "%s (%d, %d): %s\n";
+
 
     public void setPath(String path) throws IOException {
         File file = new File(path);
@@ -25,18 +23,6 @@ public class Writer {
         for (String temp : text) {
             sb.append(temp);
             sb.append("\n");
-        }
-        writeString(sb.toString(),path);
-    }
-
-    public void writeLexemTable(List<Token> tokens,String path) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (Token token : tokens) {
-            sb.append(String.format(LEXEM_PATTERN,
-                    token.getTokenName().getName(),
-                    token.getLineNumber(),
-                    token.getSymbolNumber(),
-                    token.getValue()));
         }
         writeString(sb.toString(),path);
     }

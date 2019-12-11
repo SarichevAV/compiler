@@ -1,7 +1,7 @@
 package analyzers.syntax;
 
-import analyzers.lexem.models.Token;
-import analyzers.lexem.models.TokenNames;
+import models.Token;
+import models.TokenNames;
 import exceptions.ExpectedException;
 import service.TokensChecker;
 
@@ -16,6 +16,7 @@ public class SyntaxAnalyzer {
     private final static String SIGN_ASSIGN = ":=";
     private final static String SIGN_MINUS = "-";
     private final static String RIGHT_BRACKET = ")";
+    private final static String UNARY_MINUS = "~";
 
     private Iterator<Token> tokens;
     private Token token;
@@ -141,6 +142,7 @@ public class SyntaxAnalyzer {
     private void maybeMinus() {
         if (token.isRightToken(TokenNames.OPERL)
                 && token.isRightValue(SIGN_MINUS)) {
+            token.setValue(UNARY_MINUS);
             nextToken();
         }
     }
